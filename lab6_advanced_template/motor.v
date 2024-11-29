@@ -30,14 +30,14 @@ module motor(
             2'b01: begin
                 left_motor = 10'd614; // Left motor at ~60% duty cycle
                 right_motor = 10'd717; // Right motor at ~80% duty cycle
-                r_IN = 2'b01; // Forward
-                l_IN = 2'b10; // Forward
+                r_IN = 2'b10; // Forward
+                l_IN = 2'b01; // Forward
             end
             2'b10: begin
                 left_motor = 10'd717; // Left motor at ~80% duty cycle
                 right_motor = 10'd614; // Right motor at ~60% duty cycle
-                r_IN = 2'b01; // Both motors forward
-                l_IN = 2'b10; // Both motors forward
+                r_IN = 2'b10; // Both motors forward
+                l_IN = 2'b01; // Both motors forward
             end
             2'b11: begin
                 left_motor = 10'd717; // Forward at ~80% duty cycle

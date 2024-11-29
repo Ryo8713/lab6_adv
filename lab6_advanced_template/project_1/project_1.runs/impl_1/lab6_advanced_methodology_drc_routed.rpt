@@ -1,7 +1,7 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2019.2 (win64) Build 2708876 Wed Nov  6 21:40:23 MST 2019
-| Date         : Fri Nov 29 22:22:23 2024
+| Date         : Fri Nov 29 23:20:41 2024
 | Host         : LAPTOP-EJ06DPFO running 64-bit major release  (build 9200)
 | Command      : report_methodology -file lab6_advanced_methodology_drc_routed.rpt -pb lab6_advanced_methodology_drc_routed.pb -rpx lab6_advanced_methodology_drc_routed.rpx
 | Design       : lab6_advanced
