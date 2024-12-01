@@ -12,13 +12,17 @@ module lab6_advanced(
     output IN4,
     output left_pwm,
     output right_pwm,
-    output [4:0] led
+    output [6:0] led
 );
     // We have connected the motor and sonic_top modules in the template file for you.
     // TODO: control the motors with the information you get from ultrasonic sensor and 3-way track sensor.
-    reg [1:0] mode;
+    reg [2:0] mode;
     wire [19:0] distance;
-
+    reg [2:0] onesecond;
+    wire clk_div;
+    
+    clock_divider #(25) clk1 (.clk(clk), .clk_div(clk_div));
+    
     motor A(
         .clk(clk),
         .rst(rst),
@@ -45,19 +49,57 @@ module lab6_advanced(
         .state(state)
     );
 
-    assign led = {left_track, mid_track, right_track, mode};
+    assign led = {obstacle, left_track, mid_track, right_track, mode};
     
+    reg obstacle;
     always @(*) begin
-        if(distance < 20'd20) begin
-            mode = 2'b00; // Stop both motors
+        if(distance < 20'd15) begin
+            mode = 3'b000; // Stop both motors
+            obstacle = 1'b1;
         end else begin
+            obstacle = 1'b0;
             //mode = state;
             case ({left_track, mid_track, right_track})
-                3'b101: mode = 2'b11; // Move forward if only mid_track is high
-                3'b011: mode = 2'b01; // Turn left if left_track is high
-                3'b110: mode = 2'b10; // Turn right if right_track is high
-                default: mode = 2'b11; // Stop if no track is detected or multiple tracks
+                3'b101: mode = 3'b011; // Move forward if only mid_track is high
+                3'b011: mode = 3'b001; // Turn left if left_track is high
+                3'b110: mode = 3'b010; // Turn right if right_track is high
+                3'b111: begin
+                    if(onesecond == 3'b111)mode = 3'b100; // move backward
+                    else mode = 3'b011;
+                end
+                3'b001:mode = 3'b010;
+                3'b100:mode = 3'b001;
+                default: mode = 3'b011; 
             endcase
         end
     end
+    
+    always@(posedge clk_div)begin
+        if({left_track, mid_track, right_track} == 3'b111)begin
+            if(onesecond != 3'b111)begin
+                onesecond <= onesecond + 1'b1;
+            end
+        end
+        else onesecond <= 1'b0;
+    end
+    
 endmodule
+
+module clock_divider #(
+    parameter n = 27
+)(
+    input wire  clk,
+    output wire clk_div  
+);
+
+    reg [n-1:0] num;
+    wire [n-1:0] next_num;
+
+    always @(posedge clk) begin
+        num <= next_num;
+    end
+
+    assign next_num = num + 1;
+    assign clk_div = num[n-1];
+endmodule
+

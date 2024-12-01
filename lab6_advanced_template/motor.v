@@ -1,10 +1,7 @@
-// This module take "mode" input and control two motors accordingly.
-// clk should be 100MHz for PWM_gen module to work correctly.
-// You can modify / add more inputs and outputs by yourself.
 module motor(
     input clk,
     input rst,
-    input [1:0]mode,
+    input [2:0]mode,
     output [1:0]pwm,
     output reg [1:0]r_IN,
     output reg [1:0]l_IN
@@ -21,29 +18,35 @@ module motor(
     // Control the speed and direction of the two motors based on the mode input
     always @(*) begin
         case (mode)
-            2'b00: begin
+            3'b000: begin
                 left_motor = 10'd0; // Stop both motors
                 right_motor = 10'd0;
                 r_IN = 2'b00; // No direction
                 l_IN = 2'b00;
             end
-            2'b01: begin
-                left_motor = 10'd614; // Left motor at ~60% duty cycle
-                right_motor = 10'd717; // Right motor at ~80% duty cycle
-                r_IN = 2'b10; // Forward
+            3'b001: begin // kiri
+                left_motor = 10'd817; // Left motor at ~60% duty cycle, left motor control right wheel
+                right_motor = 10'd720; // Right motor at ~80% duty cycle
+                r_IN = 2'b01; // Forward
                 l_IN = 2'b01; // Forward
             end
-            2'b10: begin
-                left_motor = 10'd717; // Left motor at ~80% duty cycle
-                right_motor = 10'd614; // Right motor at ~60% duty cycle
-                r_IN = 2'b10; // Both motors forward
-                l_IN = 2'b01; // Both motors forward
-            end
-            2'b11: begin
-                left_motor = 10'd717; // Forward at ~80% duty cycle
-                right_motor = 10'd717;
+            3'b010: begin // kanan
+                left_motor = 10'd614; // Left motor at ~80% duty cycle
+                right_motor = 10'd817; // Right motor at ~60% duty cycle
                 r_IN = 2'b01; // Both motors forward
                 l_IN = 2'b10; // Both motors forward
+            end
+            3'b011: begin
+                left_motor = 10'd750; // Forward at ~80% duty cycle
+                right_motor = 10'd750;
+                r_IN = 2'b01; // Both motors forward
+                l_IN = 2'b10; // Both motors forward
+            end
+            3'b100: begin //move backward
+                left_motor = 10'd750; // Forward at ~80% duty cycle
+                right_motor = 10'd750;
+                r_IN = 2'b10; // Both motors forward
+                l_IN = 2'b01; // Both motors forward
             end
             default: begin
                 left_motor = 10'd0;
@@ -61,7 +64,7 @@ module motor_pwm (
     input clk,
     input reset,
     input [9:0]duty,
-	output pmod_1 //PWM
+ output pmod_1 //PWM
 );
         
     PWM_gen pwm_0 ( 
@@ -78,7 +81,7 @@ endmodule
 module PWM_gen (
     input wire clk,
     input wire reset,
-	input [31:0] freq,
+ input [31:0] freq,
     input [9:0] duty,
     output reg PWM
 );
@@ -100,4 +103,3 @@ module PWM_gen (
         end
     end
 endmodule
-
