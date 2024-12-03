@@ -53,7 +53,7 @@ module lab6_advanced(
     
     reg obstacle;
     always @(*) begin
-        if(distance < 20'd15) begin
+        if(distance < 20'd20) begin
             mode = 3'b000; // Stop both motors
             obstacle = 1'b1;
         end else begin
@@ -64,11 +64,11 @@ module lab6_advanced(
                 3'b011: mode = 3'b001; // Turn left if left_track is high
                 3'b110: mode = 3'b010; // Turn right if right_track is high
                 3'b111: begin
-                    if(onesecond == 3'b101)mode = 3'b100; // move backward
+                    if(onesecond == 3'b010)mode = 3'b100; // move backward
                     else mode = 3'b011;
                 end
-                //3'b001:mode = 3'b001;
-                //3'b100:mode = 3'b010;
+                3'b001:mode = 3'b101;
+                3'b100:mode = 3'b110;
                 default: mode = 3'b011; 
             endcase
         end
@@ -76,7 +76,7 @@ module lab6_advanced(
     
     always@(posedge clk_div)begin
         if({left_track, mid_track, right_track} == 3'b111)begin
-            if(onesecond != 3'b101)begin
+            if(onesecond != 3'b010)begin
                 onesecond <= onesecond + 1'b1;
             end
         end
