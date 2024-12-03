@@ -67,8 +67,8 @@ module lab6_advanced(
                     if(onesecond == 3'b101)mode = 3'b100; // move backward
                     else mode = 3'b011;
                 end
-                //3'b001:mode = 3'b010;
-                //3'b100:mode = 3'b001;
+                //3'b001:mode = 3'b001;
+                //3'b100:mode = 3'b010;
                 default: mode = 3'b011; 
             endcase
         end

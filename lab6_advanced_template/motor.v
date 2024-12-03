@@ -26,12 +26,12 @@ module motor(
             end
             3'b001: begin // kiri
                 left_motor = 10'd817; // Left motor at ~60% duty cycle, left motor control right wheel
-                right_motor = 10'd720; // Right motor at ~80% duty cycle
+                right_motor = 10'd690; // Right motor at ~80% duty cycle
                 r_IN = 2'b01; // Forward
-                l_IN = 2'b01; // Forward
+                l_IN = 2'b10; // Forward
             end
             3'b010: begin // kanan
-                left_motor = 10'd614; // Left motor at ~80% duty cycle
+                left_motor = 10'd690; // Left motor at ~80% duty cycle
                 right_motor = 10'd817; // Right motor at ~60% duty cycle
                 r_IN = 2'b01; // Both motors forward
                 l_IN = 2'b10; // Both motors forward
