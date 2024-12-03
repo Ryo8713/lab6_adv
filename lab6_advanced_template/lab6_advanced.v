@@ -64,11 +64,11 @@ module lab6_advanced(
                 3'b011: mode = 3'b001; // Turn left if left_track is high
                 3'b110: mode = 3'b010; // Turn right if right_track is high
                 3'b111: begin
-                    if(onesecond == 3'b111)mode = 3'b100; // move backward
+                    if(onesecond == 3'b101)mode = 3'b100; // move backward
                     else mode = 3'b011;
                 end
-                3'b001:mode = 3'b010;
-                3'b100:mode = 3'b001;
+                //3'b001:mode = 3'b010;
+                //3'b100:mode = 3'b001;
                 default: mode = 3'b011; 
             endcase
         end
@@ -76,7 +76,7 @@ module lab6_advanced(
     
     always@(posedge clk_div)begin
         if({left_track, mid_track, right_track} == 3'b111)begin
-            if(onesecond != 3'b111)begin
+            if(onesecond != 3'b101)begin
                 onesecond <= onesecond + 1'b1;
             end
         end
